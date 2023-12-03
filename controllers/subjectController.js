@@ -49,8 +49,25 @@ const importQuestions = asyncHandler(async (req, res) => {
     res.status(200).json(subject);
 });
 
+// @desc    Get questions for given subject
+// @route   GET /api/subjects/:id/questions
+// @access  Public
+const getQuestions = asyncHandler(async (req, res) => {
+    const subjectId = req.params.id;
+
+    const subject = await Subject.findById(subjectId);
+
+    if(!subject) {
+        res.status(404);
+        throw new Error('Nepostojeci predmet');
+    }
+
+    res.status(200).json({questions: subject.questions});
+});
+
 module.exports = {
     getSubjects,
     createSubject,
-    importQuestions
+    importQuestions,
+    getQuestions
 };
